@@ -26,7 +26,7 @@ namespace Manne.EfCore.AwesomeModule
             return serviceCollection
                 .AddScoped<IReadableAwesomeDbContext, AwesomeReadableDbContext>()
                 .AddScoped<IWriteableAwesomeDbContext, AwesomeWriteableDbContext>()
-                .AddScoped<ISieveProcessor<GetAllRequest, FilterTerm, SortTerm>, SieveProcessor<GetAllRequest, FilterTerm, SortTerm>>()
+                .AddScoped<ISieveProcessor<GetAllQuery, FilterTerm, SortTerm>, SieveProcessor<GetAllQuery, FilterTerm, SortTerm>>()
                 .AddMediatR(typeof(IWriteableAwesomeDbContext));
         }
     }

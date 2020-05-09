@@ -6,7 +6,6 @@ using Manne.EfCore.AwesomeModule.Contracts;
 using Manne.EfCore.AwesomeModule.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace WebApplication.Controllers
@@ -25,33 +24,27 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromQuery] GetAllRequest request, CancellationToken cancellationToken)
+        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromQuery] GetAllQuery query, CancellationToken cancellationToken)
         {
             _logger.LogInformation("get all awesomes");
-            var entities = await _mediator.Send(request, cancellationToken);
+            var entities = await _mediator.Send(query, cancellationToken);
             return entities.Awesomes;
         }
 
         [HttpGet("{id}")]
-        public async ValueTask<Awesome> GetAsync(int id, [FromServices] IReadableAwesomeDbContext readableDbContext, CancellationToken cancellationToken)
+        public async ValueTask<Awesome> GetAsync(GetSingleQuery query, [FromServices] IReadableAwesomeDbContext readableDbContext, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("get all awesomes");
-            var entities = await readableDbContext.Awesomes.FirstAsync(a => a.Id == id, cancellationToken);
-            return entities;
+            _logger.LogInformation("get single awesomes");
+            var entity = await _mediator.Send(query, cancellationToken);
+            return entity;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateAwesomeRequest request, [FromServices] IWriteableAwesomeDbContext writeableDbContext, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAsync(CreateAwesomeCommand command, CancellationToken cancellationToken)
         {
             _logger.LogInformation("create awesome");
-            var instanceToCreate = new Awesome
-            {
-                Bla = request.Bla,
-                Blub = request.Blub
-            };
-            writeableDbContext.Add(instanceToCreate);
-            await writeableDbContext.SaveChangesAsync(cancellationToken);
-            return CreatedAtAction("Get", new { id = instanceToCreate.Id }, instanceToCreate);
+            var entity = await _mediator.Send(command, cancellationToken);
+            return CreatedAtAction("Get", new { id = entity.Id }, entity);
         }
     }
 }
