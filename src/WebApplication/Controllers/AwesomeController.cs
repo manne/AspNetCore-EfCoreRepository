@@ -3,11 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Manne.EfCore.AwesomeModule;
 using Manne.EfCore.AwesomeModule.Contracts;
+using Manne.EfCore.AwesomeModule.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Sieve.Models;
-using Sieve.Services;
 
 namespace WebApplication.Controllers
 {
@@ -16,20 +16,20 @@ namespace WebApplication.Controllers
     public class AwesomeController : ControllerBase
     {
         private readonly ILogger<AwesomeController> _logger;
+        private readonly IMediator _mediator;
 
-        public AwesomeController(ILogger<AwesomeController> logger)
+        public AwesomeController(ILogger<AwesomeController> logger, IMediator mediator)
         {
             _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromQuery] GetAllRequest request, [FromServices] IReadableAwesomeDbContext readableDbContext, [FromServices] ISieveProcessor<GetAllRequest, FilterTerm, SortTerm> sieveProcessor, CancellationToken cancellationToken)
+        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromQuery] GetAllRequest request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("get all awesomes");
-            var queryable = readableDbContext.Awesomes;
-            queryable = sieveProcessor.Apply(request, queryable);
-            var entities = await queryable.ToListAsync(cancellationToken);
-            return entities;
+            var entities = await _mediator.Send(request, cancellationToken);
+            return entities.Awesomes;
         }
 
         [HttpGet("{id}")]

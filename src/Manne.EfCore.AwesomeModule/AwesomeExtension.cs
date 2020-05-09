@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Manne.EfCore.AwesomeModule.Contracts;
 using Manne.EfCore.AwesomeModule.Internals;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sieve.Models;
@@ -25,7 +26,8 @@ namespace Manne.EfCore.AwesomeModule
             return serviceCollection
                 .AddScoped<IReadableAwesomeDbContext, AwesomeReadableDbContext>()
                 .AddScoped<IWriteableAwesomeDbContext, AwesomeWriteableDbContext>()
-                .AddScoped<ISieveProcessor<GetAllRequest, FilterTerm, SortTerm>, SieveProcessor<GetAllRequest, FilterTerm, SortTerm>>();
+                .AddScoped<ISieveProcessor<GetAllRequest, FilterTerm, SortTerm>, SieveProcessor<GetAllRequest, FilterTerm, SortTerm>>()
+                .AddMediatR(typeof(IWriteableAwesomeDbContext));
         }
     }
 }

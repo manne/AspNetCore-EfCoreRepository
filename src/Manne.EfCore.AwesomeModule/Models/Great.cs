@@ -1,4 +1,4 @@
-﻿namespace Manne.EfCore.AwesomeModule
+﻿namespace Manne.EfCore.AwesomeModule.Models
 {
     public class Great
     {

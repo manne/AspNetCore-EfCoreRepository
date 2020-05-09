@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Manne.EfCore.AwesomeModule.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manne.EfCore.AwesomeModule.Internals
