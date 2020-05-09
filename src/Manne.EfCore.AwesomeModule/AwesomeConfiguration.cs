@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace WebApplication
+namespace Manne.EfCore.AwesomeModule
 {
     public class AwesomeConfiguration : IEntityTypeConfiguration<Awesome>
     {
-        public void Configure(EntityTypeBuilder<Awesome> entity)
+        public void Configure(EntityTypeBuilder<Awesome> builder)
         {
-            entity.Property(e => e.Id)
+            builder.Property(e => e.Id)
                 .ValueGeneratedNever();
 
-            entity.Property(e => e.Bla)
+            builder.Property(e => e.Bla)
                 .HasMaxLength(10);
 
-            entity.Property(e => e.Blub)
+            builder.Property(e => e.Blub)
                 .HasMaxLength(10);
         }
     }

@@ -1,3 +1,4 @@
+using Manne.EfCore.AwesomeModule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,15 @@ namespace WebApplication
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<AwesomeContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            });
+            services
+                .AddControllers();
+            services
+                .AddAwesomeModuleDbContext(options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                })
+                .AddAwesomeModule();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

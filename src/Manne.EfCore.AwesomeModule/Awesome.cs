@@ -1,4 +1,4 @@
-﻿namespace WebApplication
+﻿namespace Manne.EfCore.AwesomeModule
 {
     public class Awesome
     {
