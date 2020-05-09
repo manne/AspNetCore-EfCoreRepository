@@ -1,8 +1,11 @@
 ﻿using System;
 using FluentValidation.AspNetCore;
+using Manne.EfCore.AwesomeModule.Contracts;
 using Manne.EfCore.AwesomeModule.Internals;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace Manne.EfCore.AwesomeModule
 {
@@ -21,7 +24,8 @@ namespace Manne.EfCore.AwesomeModule
                 .AddFluentValidation(configure => configure.RegisterValidatorsFromAssemblyContaining<IWriteableAwesomeDbContext>());
             return serviceCollection
                 .AddScoped<IReadableAwesomeDbContext, AwesomeReadableDbContext>()
-                .AddScoped<IWriteableAwesomeDbContext, AwesomeWriteableDbContext>();
+                .AddScoped<IWriteableAwesomeDbContext, AwesomeWriteableDbContext>()
+                .AddScoped<ISieveProcessor<GetAllRequest, FilterTerm, SortTerm>, SieveProcessor<GetAllRequest, FilterTerm, SortTerm>>();
         }
     }
 }

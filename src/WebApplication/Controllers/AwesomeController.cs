@@ -6,6 +6,8 @@ using Manne.EfCore.AwesomeModule.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace WebApplication.Controllers
 {
@@ -21,10 +23,12 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromServices] IReadableAwesomeDbContext readableDbContext, CancellationToken cancellationToken)
+        public async ValueTask<IEnumerable<Awesome>> GetAllAsync([FromQuery] GetAllRequest request, [FromServices] IReadableAwesomeDbContext readableDbContext, [FromServices] ISieveProcessor<GetAllRequest, FilterTerm, SortTerm> sieveProcessor, CancellationToken cancellationToken)
         {
             _logger.LogInformation("get all awesomes");
-            var entities = await readableDbContext.Awesomes.ToListAsync(cancellationToken);
+            var queryable = readableDbContext.Awesomes;
+            queryable = sieveProcessor.Apply(request, queryable);
+            var entities = await queryable.ToListAsync(cancellationToken);
             return entities;
         }
 
