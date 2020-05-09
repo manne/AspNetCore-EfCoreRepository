@@ -1,4 +1,7 @@
-﻿using Manne.EfCore.DbAbstraction;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Manne.EfCore.DbAbstraction;
 using Microsoft.EntityFrameworkCore;
 
 namespace Manne.EfCore.AwesomeModule
@@ -24,21 +27,46 @@ namespace Manne.EfCore.AwesomeModule
         }
     }
 
-    internal class AwesomeDbContext : IAwesomeDbContext
+    internal class AwesomeReadableDbContext : IReadableAwesomeDbContext
     {
-        public AwesomeDbContext(AwesomeEfContext awesomeEfContext)
-        {
-            Awesomes = awesomeEfContext.Awesome.AsIDbSet();
-            Greats = awesomeEfContext.Great.AsIDbSet();
-        }
-        public IDbSet<Awesome> Awesomes { get; }
-        public IDbSet<Great> Greats { get; }
+        public AwesomeReadableDbContext(AwesomeEfContext awesomeEfContext)
+            => (Awesomes, Greats) = (awesomeEfContext.Awesome.AsIReadableDbSet(), awesomeEfContext.Great.AsIReadableDbSet());
+
+        public IQueryable<Awesome> Awesomes { get; }
+
+        public IQueryable<Great> Greats { get; }
     }
 
-    public interface IAwesomeDbContext : IDbContext
+    internal class AwesomeWriteableDbContext : IWriteableAwesomeDbContext
     {
-        IDbSet<Awesome> Awesomes { get; }
+        private readonly AwesomeEfContext _awesomeEfContext;
 
-        IDbSet<Great> Greats { get; }
+        public AwesomeWriteableDbContext(AwesomeEfContext awesomeEfContext)
+        {
+            _awesomeEfContext = awesomeEfContext;
+        }
+
+        public void AddAwesome(Awesome awesome)
+        {
+            _awesomeEfContext.Entry(awesome).State = EntityState.Added;
+            _awesomeEfContext.Awesome.Add(awesome);
+        }
+
+        public async ValueTask SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            _ = await _awesomeEfContext.SaveChangesAsync(cancellationToken);
+        }
+    }
+
+    public interface IReadableAwesomeDbContext : IReadableDbContext
+    {
+        IQueryable<Awesome> Awesomes { get; }
+
+        IQueryable<Great> Greats { get; }
+    }
+
+    public interface IWriteableAwesomeDbContext : IWriteableDbContext
+    {
+        void AddAwesome(Awesome awesome);
     }
 }

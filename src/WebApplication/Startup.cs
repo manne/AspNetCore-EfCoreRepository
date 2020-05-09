@@ -22,10 +22,11 @@ namespace WebApplication
             services
                 .AddControllers();
             services
+                .AddSwaggerGen()
                 .AddAwesomeModuleDbContext(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 })
                 .AddAwesomeModule();
         }
@@ -37,16 +38,19 @@ namespace WebApplication
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app
+                .UseHttpsRedirection()
+                .UseSwagger()
+                .UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                })
+                .UseRouting()
+                .UseAuthorization()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                });
         }
     }
 }

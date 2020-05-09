@@ -8,7 +8,7 @@ namespace Manne.EfCore.AwesomeModule
         public void Configure(EntityTypeBuilder<Great> builder)
         {
             builder.Property(e => e.Id)
-                .ValueGeneratedNever();
+                .ValueGeneratedOnAdd();
 
             builder.Property(e => e.Description)
                 .HasMaxLength(50);

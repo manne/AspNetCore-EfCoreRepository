@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,13 @@ namespace Manne.EfCore.AwesomeModule
         => serviceCollection.AddDbContext<AwesomeEfContext>(optionsAction, contextLifetime, optionsLifetime);
 
         public static IServiceCollection AddAwesomeModule(this IServiceCollection serviceCollection)
-        => serviceCollection.AddScoped<IAwesomeDbContext, AwesomeDbContext>();
+        {
+            serviceCollection
+                .AddControllers()
+                .AddFluentValidation(configure => configure.RegisterValidatorsFromAssemblyContaining<IWriteableAwesomeDbContext>());
+            return serviceCollection
+                .AddScoped<IReadableAwesomeDbContext, AwesomeReadableDbContext>()
+                .AddScoped<IWriteableAwesomeDbContext, AwesomeWriteableDbContext>();
+        }
     }
 }

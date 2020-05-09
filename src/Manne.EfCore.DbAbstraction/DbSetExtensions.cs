@@ -10,25 +10,21 @@ namespace Manne.EfCore.DbAbstraction
 {
     public static class DbSetExtensions
     {
-        public static IDbSet<TEntity> AsIDbSet<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
-         => new DbSetWrapper<TEntity>(dbSet);
+        public static IReadableDbSet<TEntity> AsIReadableDbSet<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
+         => new DbReadableSetWrapper<TEntity>(dbSet);
     }
 
-    internal class DbSetWrapper<TEntity> : IDbSet<TEntity> where TEntity : class
+    internal class DbReadableSetWrapper<TEntity> : IReadableDbSet<TEntity> where TEntity : class
     {
         private readonly DbSet<TEntity> _dbSet;
 
-        public DbSetWrapper(DbSet<TEntity> dbSet) => _dbSet = dbSet;
+        public DbReadableSetWrapper(DbSet<TEntity> dbSet) => _dbSet = dbSet;
 
         public Type ElementType => ((IQueryable)_dbSet).ElementType;
 
         public Expression Expression => ((IQueryable) _dbSet).Expression;
 
         public IQueryProvider Provider => ((IQueryable) _dbSet).Provider;
-
-        public void Add(TEntity entity) => _dbSet.Add(entity);
-
-        public void AddRange(params TEntity[] entities) => _dbSet.AddRange(entities);
 
         public IEnumerator<TEntity> GetEnumerator() => ((IEnumerable<TEntity>) _dbSet).GetEnumerator();
 

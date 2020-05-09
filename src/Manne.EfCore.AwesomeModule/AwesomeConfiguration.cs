@@ -7,8 +7,8 @@ namespace Manne.EfCore.AwesomeModule
     {
         public void Configure(EntityTypeBuilder<Awesome> builder)
         {
-            builder.Property(e => e.Id)
-                .ValueGeneratedNever();
+            builder
+                .HasKey(e => e.Id);
 
             builder.Property(e => e.Bla)
                 .HasMaxLength(10);
