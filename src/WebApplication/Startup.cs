@@ -26,7 +26,7 @@ namespace WebApplication
                 .AddAwesomeModuleDbContext(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                    //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 })
                 .AddAwesomeModule();
         }
