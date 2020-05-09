@@ -28,7 +28,7 @@ namespace WebApplication.Controllers
         {
             _logger.LogInformation("get all awesomes");
             var entities = await _mediator.Send(query, cancellationToken);
-            return entities.Awesomes;
+            return entities;
         }
 
         [HttpGet("{id}")]

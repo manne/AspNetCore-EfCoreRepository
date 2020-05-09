@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Manne.EfCore.AwesomeModule.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 
 namespace Manne.EfCore.AwesomeModule.Contracts
 {
-    public class GetAllQuery : IRequest<GetAllResult>, ISieveModel<FilterTerm, SortTerm>
+    public class GetAllQuery : IRequest<IImmutableList<Awesome>>, ISieveModel<FilterTerm, SortTerm>
     {
         private const string EscapedCommaPattern = @"(?<!($|[^\\])(\\\\)*?\\),";
 
