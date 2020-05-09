@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Manne.EfCore.AwesomeModule.Handlers
 {
-    public sealed class GetSingleHandler : IRequestHandler<GetSingleQuery, Awesome>
+    internal sealed class GetSingleHandler : IRequestHandler<GetSingleQuery, Awesome>
     {
         private readonly IReadableAwesomeDbContext _readableDbContext;
 

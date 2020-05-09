@@ -10,7 +10,7 @@ using Sieve.Services;
 
 namespace Manne.EfCore.AwesomeModule.Handlers
 {
-    public class GetAllHandler : IRequestHandler<GetAllQuery, IImmutableList<Awesome>>
+    internal class GetAllHandler : IRequestHandler<GetAllQuery, IImmutableList<Awesome>>
     {
         private readonly IReadableAwesomeDbContext _readableAwesomeDbContext;
         private readonly ISieveProcessor<GetAllQuery, FilterTerm, SortTerm> _sieveProcessor;

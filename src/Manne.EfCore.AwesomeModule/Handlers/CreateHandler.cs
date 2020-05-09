@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Manne.EfCore.AwesomeModule.Handlers
 {
-    public sealed class CreateHandler : IRequestHandler<CreateAwesomeCommand, Awesome>
+    internal sealed class CreateHandler : IRequestHandler<CreateAwesomeCommand, Awesome>
     {
         private readonly IWriteableAwesomeDbContext _writeableDbContext;
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Manne.EfCore.AwesomeModule;
 using Manne.EfCore.AwesomeModule.Contracts;
 using Manne.EfCore.AwesomeModule.Models;
 using MediatR;
@@ -32,7 +31,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet("{id}")]
-        public async ValueTask<Awesome> GetAsync(GetSingleQuery query, [FromServices] IReadableAwesomeDbContext readableDbContext, CancellationToken cancellationToken)
+        public async ValueTask<Awesome> GetAsync(GetSingleQuery query, CancellationToken cancellationToken)
         {
             _logger.LogInformation("get single awesomes");
             var entity = await _mediator.Send(query, cancellationToken);

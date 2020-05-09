@@ -3,7 +3,7 @@ using Manne.EfCore.DbAbstraction;
 
 namespace Manne.EfCore.AwesomeModule
 {
-    public interface IWriteableAwesomeDbContext : IWriteableDbContext, IWriteableDbSet<Awesome>, IWriteableDbSet<Great>
+    internal interface IWriteableAwesomeDbContext : IWriteableDbContext, IWriteableDbSet<Awesome>, IWriteableDbSet<Great>
     {
     }
 }
