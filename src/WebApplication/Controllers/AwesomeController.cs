@@ -24,7 +24,7 @@ namespace WebApplication.Controllers
         public async ValueTask<IEnumerable<Awesome>> GetAllAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("get all awesomes");
-            var entities = await _awesomeContext.Awesome.AsNoTracking().ToListAsync(cancellationToken);
+            var entities = await _awesomeContext.Awesome.ToListAsync(cancellationToken);
             return entities;
         }
     }
