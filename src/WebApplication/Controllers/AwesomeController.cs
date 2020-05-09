@@ -45,7 +45,7 @@ namespace WebApplication.Controllers
                 Bla = request.Bla,
                 Blub = request.Blub
             };
-            writeableDbContext.AddAwesome(instanceToCreate);
+            writeableDbContext.Add(instanceToCreate);
             await writeableDbContext.SaveChangesAsync(cancellationToken);
             return CreatedAtAction("Get", new { id = instanceToCreate.Id }, instanceToCreate);
         }

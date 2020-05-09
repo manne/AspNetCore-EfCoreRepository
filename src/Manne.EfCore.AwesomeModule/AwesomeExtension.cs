@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentValidation.AspNetCore;
+using Manne.EfCore.AwesomeModule.Internals;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -11,7 +11,7 @@ namespace Manne.EfCore.DbAbstraction
     public static class DbSetExtensions
     {
         public static IReadableDbSet<TEntity> AsIReadableDbSet<TEntity>(this DbSet<TEntity> dbSet) where TEntity : class
-         => new DbReadableSetWrapper<TEntity>(dbSet);
+         => new DbReadableSetWrapper<TEntity>(dbSet ?? throw new ArgumentNullException(nameof(dbSet)));
     }
 
     internal class DbReadableSetWrapper<TEntity> : IReadableDbSet<TEntity> where TEntity : class

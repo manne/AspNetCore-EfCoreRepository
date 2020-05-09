@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Manne.EfCore.AwesomeModule
+namespace Manne.EfCore.AwesomeModule.Internals
 {
-    public class AwesomeConfiguration : IEntityTypeConfiguration<Awesome>
+    internal class AwesomeConfiguration : IEntityTypeConfiguration<Awesome>
     {
         public void Configure(EntityTypeBuilder<Awesome> builder)
         {
